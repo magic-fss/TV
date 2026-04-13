@@ -1,36 +1,18 @@
-// 读取所有源
-export async function onRequestGet({ env }) {
-  const { results } = await env.DB.prepare(
-    "SELECT * FROM sources ORDER BY id"
-  ).all();
-
-  return new Response(JSON.stringify(results), {
-    headers: { "Content-Type": "application/json" },
-  });
+// functions/api/source.js
+export async function onRequestGet(context) {
+    // 直接返回固定的 JSON，测试连通性
+    const data = [
+        { "id": 1, "name": "测试源1", "url": "https://example.com/stream1.m3u8" },
+        { "id": 2, "name": "测试源2", "url": "https://example.com/stream2.m3u8" }
+    ];
+    
+    return new Response(JSON.stringify(data), {
+        headers: { "Content-Type": "application/json" }
+    });
 }
 
-// 添加源
-export async function onRequestPost({ env, request }) {
-  const { name, url } = await request.json();
-
-  await env.DB.prepare(
-    "INSERT INTO sources (name, url) VALUES (?, ?)"
-  ).bind(name, url).run();
-
-  return new Response(JSON.stringify({ success: true }), {
-    headers: { "Content-Type": "application/json" },
-  });
-}
-
-// 删除源
-export async function onRequestDelete({ env, request }) {
-  const { id } = await request.json();
-
-  await env.DB.prepare(
-    "DELETE FROM sources WHERE id = ?"
-  ).bind(id).run();
-
-  return new Response(JSON.stringify({ success: true }), {
-    headers: { "Content-Type": "application/json" },
-  });
+export async function onRequestPost(context) {
+    return new Response(JSON.stringify({ success: true }), {
+        headers: { "Content-Type": "application/json" }
+    });
 }
