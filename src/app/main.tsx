@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import '@fontsource/inter/400.css'
 import '@fontsource/inter/500.css'
@@ -15,11 +15,98 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 
 const root = document.getElementById('root')!
 
+// 👇 新增：欢迎弹窗组件
+function WelcomeTip() {
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    // 只在第一次访问显示
+    const seen = localStorage.getItem('welcome_tip')
+    if (!seen) {
+      setTimeout(() => setShow(true), 800)
+    }
+  }, [])
+
+  const copy = () => {
+    const url = "https://raw.githubusercontent.com/magic-fss/TV/refs/heads/main/sources.json"
+    navigator.clipboard.writeText(url)
+    alert("✅ 订阅地址已复制！")
+    setShow(false)
+    localStorage.setItem('welcome_tip', 'true')
+  }
+
+  const close = () => {
+    setShow(false)
+    localStorage.setItem('welcome_tip', 'true')
+  }
+
+  if (!show) return null
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'rgba(0,0,0,0.6)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 999999
+    }}>
+      <div style={{
+        background: '#fff',
+        borderRadius: '14px',
+        width: '90%',
+        maxWidth: '420px',
+        padding: '24px',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.3)'
+      }}>
+        <h2 style={{ margin: '0 0 12px 0', fontSize: '18px' }}>📺 欢迎使用 FSS 视频库</h2>
+        <p style={{ margin: '0 0 16px 0', color: '#555' }}>
+          一键订阅，同步所有视频源：
+        </p>
+
+        <input
+          readOnly
+          value="https://raw.githubusercontent.com/magic-fss/TV/refs/heads/main/sources.json"
+          style={{
+            width: '100%',
+            padding: '10px 12px',
+            border: '1px solid #ddd',
+            borderRadius: '8px',
+            marginBottom: '16px',
+            background: '#f9f9f9'
+          }}
+        />
+
+        <p style={{ fontSize: '12px', color: '#888', marginBottom: '20px' }}>
+          使用方法：菜单 → 设置 → 视频源管理 → 添加订阅
+        </p>
+
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+          <button onClick={close} style={{ padding: '8px 14px', borderRadius: '8px', border: '1px solid #ddd', background: '#fff' }}>
+            知道了
+          </button>
+          <button onClick={copy} style={{ padding: '8px 14px', borderRadius: '8px', border: 'none', background: '#0071e3', color: '#fff' }}>
+            复制订阅地址
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const app = (
   <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
     <TooltipProvider>
       <AppRouter />
       <Toaster richColors position="top-center" />
+      
+      {/* 👇 新增：自动弹出提示 */}
+      <WelcomeTip />
+
       {import.meta.env.OKI_DISABLE_ANALYTICS !== 'true' && (
         <>
           <Analytics />
