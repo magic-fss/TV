@@ -33,7 +33,31 @@ export interface SourceStore {
  */
 export function createEmptySourceStore(): SourceStore {
   return {
-    sources: [],
+    sources: [
+      
+      // 你可以无限加！
+      {
+        id: "1",
+        name: "央视一套",
+        url: "https://xxx.com/cctv1",
+        isEnabled: true,
+        updatedAt: new Date()
+      },
+      {
+        id: "2",
+        name: "卫视合集",
+        url: "https://xxx.com/weishi",
+        isEnabled: true,
+        updatedAt: new Date()
+      },
+      {
+        id: "3",
+        name: "电影频道",
+        url: "https://xxx.com/movie",
+        isEnabled: true,
+        updatedAt: new Date()
+      }
+    ],
     version: 1,
   }
 }
