@@ -15,29 +15,30 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 
 const root = document.getElementById('root')!
 
-// 👇 新增：欢迎弹窗组件
+// 👇 欢迎弹窗（已按你的逻辑修改）
 function WelcomeTip() {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    // 只在第一次访问显示
-    const seen = localStorage.getItem('welcome_tip')
-    if (!seen) {
+    // 只有从未复制过，才显示
+    const copied = localStorage.getItem('copied_subscription')
+    if (!copied) {
       setTimeout(() => setShow(true), 800)
     }
   }, [])
 
+  // 👇 只关闭，不记录（下次还弹）
+  const close = () => {
+    setShow(false)
+  }
+
+  // 👇 复制 + 永久不再提示
   const copy = () => {
     const url = "https://raw.githubusercontent.com/magic-fss/TV/refs/heads/main/sources.json"
     navigator.clipboard.writeText(url)
     alert("✅ 订阅地址已复制！")
     setShow(false)
-    localStorage.setItem('welcome_tip', 'true')
-  }
-
-  const close = () => {
-    setShow(false)
-    localStorage.setItem('welcome_tip', 'true')
+    localStorage.setItem('copied_subscription', 'true') // 👈 只在这里记录
   }
 
   if (!show) return null
@@ -104,7 +105,6 @@ const app = (
       <AppRouter />
       <Toaster richColors position="top-center" />
       
-      {/* 👇 新增：自动弹出提示 */}
       <WelcomeTip />
 
       {import.meta.env.OKI_DISABLE_ANALYTICS !== 'true' && (
