@@ -136,11 +136,10 @@ export function getSource(store: SourceStore, id: string): VideoSource | undefin
  * @returns 新的存储状态
  */
 export function resetSources(): SourceStore {
-  return createEmptySourceStore();
 
   // 默认配置
-  // return {
-  //   ...createEmptySourceStore(),
-  //   sources: initialSources.map((s) => ({ ...s, updatedAt: new Date() })),
-  // }
+  return {
+    ...createEmptySourceStore(),
+    sources: initialSources.map((s) => ({ ...s, updatedAt: new Date() })),
+  }
 }
