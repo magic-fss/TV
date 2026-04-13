@@ -135,7 +135,7 @@ export function getSource(store: SourceStore, id: string): VideoSource | undefin
  * @param initialSources 可选的初始视频源列表
  * @returns 新的存储状态
  */
-export function resetSources(_initialSources: VideoSource[] = []): SourceStore {
+export function resetSources(): SourceStore {
   return createEmptySourceStore();
 
   // 默认配置
