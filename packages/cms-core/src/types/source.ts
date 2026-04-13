@@ -35,13 +35,17 @@ export function createEmptySourceStore(): SourceStore {
   return {
     sources: [
       {
+        id: "1",
         name: "央视一套",
-        url: "https://feo.com/cctv1"
+        url: "https://xxx.com/cctv1",
+        isEnabled: true
       },
       {
+        id: "2",
         name: "卫视合集",
-        url: "https://asd.com/weishi"
-      },
+        url: "https://xxx.com/weishi",
+        isEnabled: true
+      }
     ],
     version: 1,
   }
