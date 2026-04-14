@@ -11,8 +11,6 @@ env:
   GITHUB_REGISTRY: ghcr.io
   IMAGE_NAME: ouonnkitv
   OKI_INITIAL_VIDEO_SOURCES: ''
-  OKI_TMDB_API_TOKEN: ''
-  OKI_ACCESS_PASSWORD: ''
   OKI_DISABLE_ANALYTICS: 'true'
   OKI_INITIAL_CONFIG: ''
 
@@ -57,6 +55,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      image_ref: ${{ steps.meta.outputs.tags }}
+      ghcr_owner: ${{ steps.ghcr-owner.outputs.value }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -174,8 +175,8 @@ jobs:
             VCS_REF=${{ github.sha }}
             VERSION=${{ steps.meta.outputs.version }}
             OKI_INITIAL_VIDEO_SOURCES=${{ env.OKI_INITIAL_VIDEO_SOURCES }}
-            OKI_TMDB_API_TOKEN=${{ env.OKI_TMDB_API_TOKEN }}
-            OKI_ACCESS_PASSWORD=${{ env.OKI_ACCESS_PASSWORD }}
+            OKI_TMDB_API_TOKEN=${{ secrets.OKI_TMDB_API_TOKEN }}
+            OKI_ACCESS_PASSWORD=${{ secrets.OKI_ACCESS_PASSWORD }}
             OKI_DISABLE_ANALYTICS=${{ env.OKI_DISABLE_ANALYTICS }}
             OKI_INITIAL_CONFIG=${{ env.OKI_INITIAL_CONFIG }}
 
@@ -189,18 +190,6 @@ jobs:
       security-events: write
 
     steps:
-      - name: Resolve GHCR owner
-        id: ghcr-owner
-        env:
-          RAW_GHCR_OWNER: ${{ github.repository_owner }}
-        run: |
-          GHCR_OWNER_CLEAN="$(printf '%s' "$RAW_GHCR_OWNER" | tr '[:upper:]' '[:lower:]' | xargs)"
-          if [ -z "$GHCR_OWNER_CLEAN" ]; then
-            echo "::error::无法解析 GHCR 仓库所有者。"
-            exit 1
-          fi
-          echo "value=$GHCR_OWNER_CLEAN" >> $GITHUB_OUTPUT
-
       - name: Log in to GHCR for Trivy scan
         uses: docker/login-action@v3
         with:
@@ -209,9 +198,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.34.0
+        uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'ghcr.io/${{ steps.ghcr-owner.outputs.value }}/${{ env.IMAGE_NAME }}:latest'
+          image-ref: 'ghcr.io/${{ needs.build-and-push.outputs.ghcr_owner }}/${{ env.IMAGE_NAME }}:latest'
           format: 'sarif'
           output: 'trivy-results.sarif'
           version: 'v0.69.3'
