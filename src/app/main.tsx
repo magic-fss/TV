@@ -15,30 +15,37 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 
 const root = document.getElementById('root')!
 
+
+
 // 👇 欢迎弹窗（已按你的逻辑修改）
 function WelcomeTip() {
   const [show, setShow] = useState(false)
 
   useEffect(() => {
-    // 只有从未复制过，才显示
     const copied = localStorage.getItem('copied_subscription')
     if (!copied) {
       setTimeout(() => setShow(true), 800)
     }
   }, [])
 
-  // 👇 只关闭，不记录（下次还弹）
   const close = () => {
     setShow(false)
   }
 
-  // 👇 复制 + 永久不再提示
-  const copy = () => {
+  const copyMain = () => {
     const url = "https://raw.githubusercontent.com/magic-fss/TV/refs/heads/main/sources.json"
     navigator.clipboard.writeText(url)
-    alert("✅ 订阅地址已复制！")
+    alert("✅ 主订阅地址已复制！")
     setShow(false)
-    localStorage.setItem('copied_subscription', 'true') // 👈 只在这里记录
+    localStorage.setItem('copied_subscription', 'true')
+  }
+
+  const copy4K = () => {
+    const url = "https://raw.githubusercontent.com/magic-fss/TV/refs/heads/main/source_4K.json"
+    navigator.clipboard.writeText(url)
+    alert("✅ 4K 高清订阅地址已复制！")
+    setShow(false)
+    localStorage.setItem('copied_subscription', 'true')
   }
 
   if (!show) return null
@@ -60,7 +67,7 @@ function WelcomeTip() {
         background: '#fff',
         borderRadius: '14px',
         width: '90%',
-        maxWidth: '420px',
+        maxWidth: '480px',
         padding: '24px',
         boxShadow: '0 20px 40px rgba(0,0,0,0.3)'
       }}>
@@ -69,35 +76,98 @@ function WelcomeTip() {
           一键订阅，同步所有视频源：
         </p>
 
-        <input
-          readOnly
-          value="https://raw.githubusercontent.com/magic-fss/TV/refs/heads/main/sources.json"
-          style={{
-            width: '100%',
-            padding: '10px 12px',
-            border: '1px solid #ddd',
-            borderRadius: '8px',
-            marginBottom: '16px',
-            background: '#f9f9f9'
-          }}
-        />
+        {/* 主订阅源 */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ fontSize: '14px', fontWeight: 500, marginBottom: '6px', display: 'block' }}>
+            📡 主订阅地址
+          </label>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <input
+              readOnly
+              value="https://raw.githubusercontent.com/magic-fss/TV/refs/heads/main/sources.json"
+              style={{
+                flex: 1,
+                padding: '10px 12px',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                background: '#f9f9f9',
+                fontSize: '13px'
+              }}
+            />
+            <button
+              onClick={copyMain}
+              style={{
+                padding: '10px 14px',
+                borderRadius: '8px',
+                border: 'none',
+                background: '#0071e3',
+                color: '#fff',
+                fontWeight: 500,
+                whiteSpace: 'nowrap'
+              }}
+            >
+              复制
+            </button>
+          </div>
+        </div>
+
+        {/* 4K 高清专用源 */}
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ fontSize: '14px', fontWeight: 500, marginBottom: '6px', display: 'block' }}>
+            🎬 4K 高清专用订阅
+          </label>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <input
+              readOnly
+              value="https://raw.githubusercontent.com/magic-fss/TV/refs/heads/main/source_4K.json"
+              style={{
+                flex: 1,
+                padding: '10px 12px',
+                border: '1px solid #ddd',
+                borderRadius: '8px',
+                background: '#f9f9f9',
+                fontSize: '13px'
+              }}
+            />
+            <button
+              onClick={copy4K}
+              style={{
+                padding: '10px 14px',
+                borderRadius: '8px',
+                border: 'none',
+                background: '#e37400',
+                color: '#fff',
+                fontWeight: 500,
+                whiteSpace: 'nowrap'
+              }}
+            >
+              复制
+            </button>
+          </div>
+        </div>
 
         <p style={{ fontSize: '12px', color: '#888', marginBottom: '20px' }}>
           使用方法：菜单 → 设置 → 视频源管理 → 添加订阅
         </p>
 
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-          <button onClick={close} style={{ padding: '8px 14px', borderRadius: '8px', border: '1px solid #ddd', background: '#fff' }}>
+          <button
+            onClick={close}
+            style={{
+              padding: '8px 14px',
+              borderRadius: '8px',
+              border: '1px solid #ddd',
+              background: '#fff'
+            }}
+          >
             知道了
-          </button>
-          <button onClick={copy} style={{ padding: '8px 14px', borderRadius: '8px', border: 'none', background: '#0071e3', color: '#fff' }}>
-            复制订阅地址
           </button>
         </div>
       </div>
     </div>
   )
 }
+
 
 const app = (
   <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
