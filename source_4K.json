@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "name": "🏆非凡4K蓝光天花板",
+    "url": "https://cj.ffzyapi.com/api.php/provide/vod/",
+    "isEnabled": true
+  },
+  {
+    "id": "2",
+    "name": "🥇卧龙4K高码至尊",
+    "url": "https://api.wolongzy.cc/api.php/provide/vod/",
+    "isEnabled": true
+  },
+  {
+    "id": "3",
+    "name": "🥈天空4K杜比全景声",
+    "url": "https://api.tiankongapi.com/api.php/provide/vod/",
+    "isEnabled": true
+  },
+  {
+    "id": "4",
+    "name": "🥉快播4K高帧丝滑",
+    "url": "https://api.kuaibozy.com/api.php/provide/vod/",
+    "isEnabled": true
+  },
+  {
+    "id": "5",
+    "name": "✨量子4K超清稳定源",
+    "url": "https://cj.lziapi.com/api.php/provide/vod/",
+    "isEnabled": true
+  },
+  {
+    "id": "6",
+    "name": "🔥红牛4K新片首发",
+    "url": "https://www.hongniuzy2.com/api.php/provide/vod/",
+    "isEnabled": true
+  },
+  {
+    "id": "7",
+    "name": "🌍光速4K欧美大片",
+    "url": "https://api.guangsuapi.com/api.php/provide/vod/",
+    "isEnabled": true
+  },
+  {
+    "id": "8",
+    "name": "🎮索尼4K动漫专属",
+    "url": "https://suoniapi.com/api.php/provide/vod/",
+    "isEnabled": true
+  },
+  {
+    "id": "9",
+    "name": "🎬爱坤4K动漫剧场版",
+    "url": "https://ikunzyapi.com/api.php/provide/vod/",
+    "isEnabled": true
+  },
+  {
+    "id": "10",
+    "name": "🍊小胡4K纯净无广",
+    "url": "http://xh1.xn--yetu07f.icu/api.php/provide/vod/",
+    "isEnabled": true
+  }
+]
